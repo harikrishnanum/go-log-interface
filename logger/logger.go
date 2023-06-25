@@ -2,6 +2,7 @@ package logger
 
 import (
 	"log"
+	"strings"
 
 	"github.com/harikrishnanum/go-log-interface/config"
 )
@@ -12,18 +13,32 @@ type Logger interface {
 	Infof(template string, args ...interface{})
 	Errorf(template string, args ...interface{})
 	// Add more methods as needed
+	OpenLogFile(file string)
+	CloseLogFile()
+}
+
+func isProduction(env string) bool {
+	switch strings.ToLower(env) {
+	case "dev", "development", "test", "stage", "staging":
+		return false
+	case "prod", "production":
+		return true
+	default:
+		log.Println("logger environment not supported, defaulting to production")
+		return true
+	}
 }
 
 var Log Logger // Global logger
 
-func init() {
-	switch config.Conf.Logger {
+func InitLogger(logger, env string) {
+	switch logger {
 	case "zapsugar":
-		Log = NewZapLogger()
+		Log = NewZapSugarLogger(env)
 	case "logrus":
-		Log = NewLogrusLogger()
+		Log = NewLogrusLogger(env)
 	default:
-		Log = NewZapLogger()
+		Log = NewLogrusLogger(env)
 	}
 	if Log == nil {
 		log.Printf("Failed to initialize %s logger", config.Conf.Logger)

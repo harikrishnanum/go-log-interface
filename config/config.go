@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	Logger string `json:"logger"`
+	Env    string `json:"env"`
 }
 
 var Conf *Config

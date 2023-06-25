@@ -34,7 +34,8 @@ Before running the project, make sure you have a `config.json` file in the root 
 
 ```json
 {
-  "logger": "logrus"
+  "logger": "logrus",
+  "env": "dev"
 }
 ```
 
@@ -46,8 +47,6 @@ Execute the following command to run the project:
 ```shell
 go run main.go
 ```
-
-This will initialize the logger based on the configuration specified in `config.json` and demonstrate how log statements can be switched between different logging libraries by utilizing interfaces.
 
 ## Contributing
 
